@@ -13,32 +13,38 @@ import argparse
 import secret_variables as sv
 import yaml
 
+
 class RequirementsEngineer:
     def gather_requirements(self, users_idea: str) -> str:
         # Logic to process user input and return technical requirements
         pass
+
 
 class BackendArchitect:
     def design_backend(self, requirements: str, backend_choice: str) -> str:
         # Logic to design backend structure based on requirements
         pass
 
+
 class FrontendArchitect:
     def design_frontend(self, requirements: str, backend_design: str, frontend_choice: str) -> str:
         # Logic to design frontend structure based on backend design
         pass
+
 
 class DataModeler:
     def design_data_model(self, requirements: str, backend_design: str) -> str:
         # Logic to design the data model based on backend design
         pass
 
+
 class UIUXDesigner:
     def suggest_design(self, requirements: str, frontend_design: str) -> str:
         # Logic to suggest UI/UX elements based on frontend design
         pass
 
-def develop_website_without_project_lead(users_idea: str, backend_choice: str, frontend_choice: str) -> dict:
+
+def develop_website_without_project_lead(users_idea: str, be_choice: str, fe_choice: str) -> dict:
     re = RequirementsEngineer()
     ba = BackendArchitect()
     fa = FrontendArchitect()
@@ -46,8 +52,8 @@ def develop_website_without_project_lead(users_idea: str, backend_choice: str, f
     ux = UIUXDesigner()
 
     requirements = re.gather_requirements(users_idea)
-    backend_design = ba.design_backend(requirements, backend_choice)
-    frontend_design = fa.design_frontend(requirements, backend_design, frontend_choice)
+    backend_design = ba.design_backend(requirements, be_choice)
+    frontend_design = fa.design_frontend(requirements, backend_design, fe_choice)
     data_model = dm.design_data_model(requirements, backend_design)
     design_suggestions = ux.suggest_design(requirements, frontend_design)
 
@@ -58,6 +64,43 @@ def develop_website_without_project_lead(users_idea: str, backend_choice: str, f
         "data_model": data_model,
         "design_suggestions": design_suggestions
     }
+
+
+class ProjectLead:
+    def communicate(self, agent_title, message):
+        # Communicate to a specific agent by stating their title
+        return f"{agent_title}\n\n{message}"
+
+    def conclude_project(self):
+        # Conclude the project
+        conclusion = "The project is done."
+        return conclusion
+
+
+def develop_website_with_project_lead(users_idea: str, be_choice: str, fe_choice: str) -> dict:
+    re = RequirementsEngineer()
+    ba = BackendArchitect()
+    fa = FrontendArchitect()
+    dm = DataModeler()
+    ux = UIUXDesigner()
+    pl = ProjectLead()
+
+    # Sample interaction with Backend Architect through Project Lead
+    pl_message = pl.communicate("Backend Architect", "What's your plan for the backend?")
+    backend_response = ba.design_backend(pl.state['idea'], pl.state['backend_choice'])
+
+    # Continue similar interactions with other agents...
+    # TODO Idea: While True -loop, in it the Project Lead says something to its team member. The
+    # name of the team member should be the first thing the Project Lead says. Assign the Project
+    # Leads message to the desired team member. Loop breaks when the project lead starts the message
+    # with: "The project is done."
+
+    # Once done, conclude the project
+    conclusion = pl.conclude_project()
+
+    # Return the state for further actions or display
+    return pl.state
+
 
 def main(args: argparse.Namespace):
     if args.yml:
@@ -74,9 +117,10 @@ def main(args: argparse.Namespace):
     if args.no_pl:
         results = develop_website_without_project_lead(users_idea, backend_choice, frontend_choice)
     else:
-        results = dict()
+        results = develop_website_with_project_lead(users_idea, backend_choice, frontend_choice)
 
     print(results)
+
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Generate a website.")
