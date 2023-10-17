@@ -1,0 +1,3 @@
+users_idea: "I want a website that allows me and my friends to track performance in different games (e.g. ping pong)! Performance metrics should include: elo, win-loss, win/loss streaks and last 10 games. It should have a web UI that is usable on a phone."
+backend_choice: "FastAPI"
+frontend_choice: "React"
